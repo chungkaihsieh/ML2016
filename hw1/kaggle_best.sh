@@ -2,8 +2,10 @@
 import numpy as np 
 import pandas as pd 
 import scipy
-import matplotlib.pyplot as plt 
+# import matplotlib.pyplot as plt 
 import csv
+import time
+
 
 '''
 read data
@@ -166,6 +168,7 @@ def extract_feature(trainning_data,component, feature_num):
 # trainning_data_24dpd = extract_feature(trainning_data,"PM2.5",10)
 # component_extract_list = ["PM2.5","AMB_TEMP","CH4","CO","NMHC","NO","NO2","NOx","O3","PM10","RH","SO2","THC","WD_HR","WIND_DIREC","WIND_SPEED","WS_HR"]
 component_extract_list = ["PM2.5","CO","NO2","O3","PM10","SO2"]
+component_extract_list = ["PM2.5"]
 # component_extract_list = ["PM2.5","PM10"]
 
 # component_extract_list = ["PM2.5","AMB_TEMP","CH4"]
@@ -266,6 +269,12 @@ for i in range(len( component_extract_list )):
 	else:
 		testing_set = np.concatenate([testing_set, testing_set_tmp[i] ], axis=1)
 
+
+np.save('training_feature', trainning_feature)
+np.save('training_yhat', trainning_yhat)
+np.save('testing_feature', testing_set)
+print('save numpy already')
+time.sleep(5)
 
 #-------
 # Turn data into:
@@ -653,7 +662,8 @@ if __name__ == '__main__':
 	# trainning_feature = feature_normalize(trainning_feature)
 	# validation_feature = feature_normalize(validation_feature)
 	# testing_set = feature_normalize(testing_set)
-
+	print('trainning_feature.shape :', trainning_feature.shape)
+	time.sleep(5)
 	(theta,cost_trainning_history, cost_validation_history) = gradient_descent(trainning_feature, trainning_yhat,validation_feature,validation_yhat, theta, learning_rate ,epochs)
 	print("**************************************")
 	print("****  parameter count :" + str(i) + "******")
@@ -684,24 +694,24 @@ if __name__ == '__main__':
 
 
 
-	print("starting point of  theta " + str(theta_tmp))
+	# print("starting point of  theta " + str(theta_tmp))
 
-	'''
-	Draw the cost function
-	'''
-	#gradient descent
-	plt.figure(1)
-	plot1 = plt.plot(range(len(cost_trainning_history[100:])) , cost_trainning_history[100:],'ro' ,label='$Trainning$')
-	plot2 = plt.plot(range(len(cost_trainning_history[100:])) , cost_validation_history[100:],'g--',label ='$Validation$')
+	# '''
+	# Draw the cost function
+	# '''
+	# #gradient descent
+	# plt.figure(1)
+	# plot1 = plt.plot(range(len(cost_trainning_history[100:])) , cost_trainning_history[100:],'ro' ,label='$Trainning$')
+	# plot2 = plt.plot(range(len(cost_trainning_history[100:])) , cost_validation_history[100:],'g--',label ='$Validation$')
 
-	plt.title('Linear Regression')
-	plt.title('LR:' + str(learning_rate), loc='left')
-	plt.title('epochs :' + str(epochs), loc='right')
-	plt.ylabel('Cost')
-	plt.xlabel('epochs')
-	plt.xlim([100,len(cost_trainning_history[100:])])
-	plt.legend()
-	plt.show(block=True)
+	# plt.title('Linear Regression')
+	# plt.title('LR:' + str(learning_rate), loc='left')
+	# plt.title('epochs :' + str(epochs), loc='right')
+	# plt.ylabel('Cost')
+	# plt.xlabel('epochs')
+	# plt.xlim([100,len(cost_trainning_history[100:])])
+	# plt.legend()
+	# plt.show(block=True)
 
 	# first_legend = plt.legend( handles=[plot1], loc=1)
 	# plt.legend( [plot1,plot2] , ('Trainning','Validation'), 'best' , numpoints=1)
